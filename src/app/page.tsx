@@ -45,7 +45,7 @@ async function HeroSection({
 }: {
   readonly data: HomePageProps;
 }) {
-  const { message, bio, banner, links } = data;
+  const { bio, banner, links } = data;
 
   return (
     <div className="flex flex-col md:flex-row items-center justify-center space-y-8 md:space-y-0 md:space-x-8 p-6 bg-gray-800 rounded-lg shadow-md">
