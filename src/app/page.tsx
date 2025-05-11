@@ -1,103 +1,85 @@
+import { getHomePageData } from "@/data/loaders";
+import { getMediaUrl } from "@/lib/utils";
+import Link from "next/link";
 import Image from "next/image";
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+interface Link {
+  url: string;
+  text: string;
+  isExternal: boolean;
+}
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+interface Banner {
+  alternativeText: string;
+  caption: string;
+  url: string;
+}
+
+interface HomePageProps {
+  message: string
+  bio: string;
+  banner: Banner;
+  links: Link[];
+}
+
+export default async function Home() {
+  const { data } = await getHomePageData();
+
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900 p-6">
+      {/* Top Heading */}
+      <h1 className="w-full fixed top-0 left-0 text-center bg-teal-900 text-white text-4xl font-bold py-4 shadow-md z-50">
+        {data.message}
+      </h1>
+
+      {/* Content Section */}
+      <div className="pt-20 w-full">
+        <HeroSection data={data} />
+      </div>
+    </div>
+  );
+}
+
+async function HeroSection({
+  data,
+}: {
+  readonly data: HomePageProps;
+}) {
+  const { message, bio, banner, links } = data;
+
+  return (
+    <div className="flex flex-col md:flex-row items-center justify-center space-y-8 md:space-y-0 md:space-x-8 p-6 bg-gray-800 rounded-lg shadow-md">
+      {/* Left Column: Banner Image */}
+      <div className="w-full md:w-1/2 max-w-4xl">
+        <Image
+          src={getMediaUrl(banner.url) || "/default-banner.jpg"} // Fallback to a default image
+          alt={banner.alternativeText || "Banner Image"}
+          width={1200}
+          height={600}
+          className="rounded-lg shadow-lg object-cover"
+        />
+      </div>
+
+      {/* Right Column: Text and Links */}
+      <div className="w-full md:w-1/2 flex flex-col items-center md:items-start space-y-6">
+        {/* Bio Section */}
+        <p className="text-lg text-gray-300 text-center md:text-left max-w-2xl">{bio}</p>
+
+        {/* Links Section */}
+        <div className="flex flex-wrap justify-center md:justify-start gap-4">
+          {links.map((link, index) => (
+            <Link
+              key={index}
+              className="inline-flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-gray-700 rounded-md shadow hover:bg-gray-600 transition"
+              href={link.url}
+              target={link.isExternal ? "_blank" : "_self"}
+              rel={link.isExternal ? "noopener noreferrer" : undefined}
+            >
+              {link.text}
+            </Link>
+          ))}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
     </div>
   );
 }
