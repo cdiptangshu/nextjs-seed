@@ -16,6 +16,7 @@ interface Banner {
 }
 
 interface HomePageProps {
+  message: string
   bio: string;
   banner: Banner;
   links: Link[];
@@ -28,7 +29,7 @@ export default async function Home() {
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900 p-6">
       {/* Top Heading */}
       <h1 className="w-full fixed top-0 left-0 text-center bg-teal-900 text-white text-4xl font-bold py-4 shadow-md z-50">
-        Under Maintenance!
+        {data.message}
       </h1>
 
       {/* Content Section */}
@@ -44,7 +45,7 @@ async function HeroSection({
 }: {
   readonly data: HomePageProps;
 }) {
-  const { bio, banner, links } = data;
+  const { message, bio, banner, links } = data;
 
   return (
     <div className="flex flex-col md:flex-row items-center justify-center space-y-8 md:space-y-0 md:space-x-8 p-6 bg-gray-800 rounded-lg shadow-md">
