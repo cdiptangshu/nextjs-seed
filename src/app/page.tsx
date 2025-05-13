@@ -1,7 +1,7 @@
-import { getHomePageData } from "@/data/loaders";
-import { getMediaUrl } from "@/lib/utils";
-import Link from "next/link";
-import Image from "next/image";
+import { getHomePageData } from '@/data/loaders';
+import { getMediaUrl } from '@/lib/utils';
+import Link from 'next/link';
+import Image from 'next/image';
 
 interface Link {
   url: string;
@@ -16,7 +16,7 @@ interface Banner {
 }
 
 interface HomePageProps {
-  message: string
+  message: string;
   bio: string;
   banner: Banner;
   links: Link[];
@@ -40,11 +40,7 @@ export default async function Home() {
   );
 }
 
-async function HeroSection({
-  data,
-}: {
-  readonly data: HomePageProps;
-}) {
+async function HeroSection({ data }: { readonly data: HomePageProps }) {
   const { bio, banner, links } = data;
 
   return (
@@ -52,8 +48,8 @@ async function HeroSection({
       {/* Left Column: Banner Image */}
       <div className="w-full md:w-1/2 max-w-4xl">
         <Image
-          src={getMediaUrl(banner.url) || "/default-banner.jpg"} // Fallback to a default image
-          alt={banner.alternativeText || "Banner Image"}
+          src={getMediaUrl(banner.url) || '/default-banner.jpg'} // Fallback to a default image
+          alt={banner.alternativeText || 'Banner Image'}
           width={1200}
           height={600}
           className="rounded-lg shadow-lg object-cover"
@@ -63,7 +59,9 @@ async function HeroSection({
       {/* Right Column: Text and Links */}
       <div className="w-full md:w-1/2 flex flex-col items-center md:items-start space-y-6">
         {/* Bio Section */}
-        <p className="text-lg text-gray-300 text-center md:text-left max-w-2xl">{bio}</p>
+        <p className="text-lg text-gray-300 text-center md:text-left max-w-2xl">
+          {bio}
+        </p>
 
         {/* Links Section */}
         <div className="flex flex-wrap justify-center md:justify-start gap-4">
@@ -72,8 +70,8 @@ async function HeroSection({
               key={index}
               className="inline-flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-gray-700 rounded-md shadow hover:bg-gray-600 transition"
               href={link.url}
-              target={link.isExternal ? "_blank" : "_self"}
-              rel={link.isExternal ? "noopener noreferrer" : undefined}
+              target={link.isExternal ? '_blank' : '_self'}
+              rel={link.isExternal ? 'noopener noreferrer' : undefined}
             >
               {link.text}
             </Link>
