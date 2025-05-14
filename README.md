@@ -30,7 +30,6 @@ cd nextjs-seed
 ```
 npm install
 ```
-Here’s a clean and concise section you can add to your `README.md` to document the `.env` file setup:
 
 ### Setup Environment
 
